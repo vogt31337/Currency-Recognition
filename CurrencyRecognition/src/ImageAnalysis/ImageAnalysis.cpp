@@ -84,7 +84,7 @@ bool ImageAnalysis::processImage(Mat& image, bool useCVHighGUI) {
 
 
 bool ImageAnalysis::updateImage() {
-	return processImage(_originalImage.clone(), _useCVHiGUI);
+	return processImage(_originalImage, _useCVHiGUI);
 }
 
 

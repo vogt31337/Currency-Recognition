@@ -1,0 +1,3 @@
+AUTOMAKE_OPTIONS = foreign
+SUBDIRS = ImageAnalysis libs GUI CLI
+ACLOCAL_AMFLAGS = -I m4
