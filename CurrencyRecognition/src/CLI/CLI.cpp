@@ -18,10 +18,10 @@ void CLI::startInteractiveCLI() {
 	int userOption = 1;
 	string filename = "";
 	int cameraDeviceNumber = 0;
-	
+
 	ConsoleInput::getInstance()->clearConsoleScreen();
 	showConsoleHeader();
-	
+
 	int screenWidth = 1920; // ConsoleInput::getInstance()->getIntCin("  >> Screen width (used to arrange windows): ", "  => Width >= 100 !!!\n", 100);
 	int screenHeight = 1080; // ConsoleInput::getInstance()->getIntCin("  >> Screen height (used to arrange windows): ", "  => Width >= 100 !!!\n", 100);
 	bool optionsOneWindow = false; // ConsoleInput::getInstance()->getYesNoCin("  >> Use only one window for options trackbars? (Y/N): ");
@@ -31,7 +31,7 @@ void CLI::startInteractiveCLI() {
 		try {
 			ConsoleInput::getInstance()->clearConsoleScreen();
 			showConsoleHeader();
-		
+
 			if (setupOfImageRecognitionDone) {
 				userOption = getUserOption();
 				if (userOption == 1) {
@@ -52,18 +52,18 @@ void CLI::startInteractiveCLI() {
 					} else if (userOption == 5) {
 						cameraDeviceNumber = ConsoleInput::getInstance()->getIntCin("  >> Insert the camera device number to use (default: 0): ", "  => Camera device number must be >= 0 !!!\n", 0);
 					}
-				
+
 					ImageAnalysis imageAnalysis(_imagePreprocessor, _imageDetector);
 					imageAnalysis.setScreenWidth(screenWidth);
 					imageAnalysis.setScreenHeight(screenHeight);
-					imageAnalysis.setOptionsOneWindow(optionsOneWindow);					
+					imageAnalysis.setOptionsOneWindow(optionsOneWindow);
 
 					switch (userOption) {
 						case 3: { if (!imageAnalysis.processImage(filename)) { cerr << "  => Failed to load image " << filename << "!" << endl; } break; }
 						case 4: { if (!imageAnalysis.processVideo(filename)) { cerr << "  => Failed to load video " << filename << "!" << endl; } break; }
 						case 5: { if (!imageAnalysis.processVideo(cameraDeviceNumber)) { cerr << "  => Failed to open camera " << cameraDeviceNumber << "!" << endl; } break; }
 						default: break;
-					}				
+					}
 				}
 			} else {
 				setupImageRecognition();
@@ -111,7 +111,7 @@ void CLI::setupImageRecognition() {
 	int descriptorExtractorSelection = selectDescriptorExtractor();
 	cout << "\n\n\n";
 	int descriptorMatcherSelection = selectDescriptorMatcher();
-	cout << "\n\n\n";	
+	cout << "\n\n\n";
 
 	Ptr<FeatureDetector> featureDetector;
 	Ptr<DescriptorExtractor> descriptorExtractor;
@@ -121,36 +121,35 @@ void CLI::setupImageRecognition() {
 	bool inliersSelectionMethodFlagToUseGlobalMatch = true;
 
 	switch (featureDetectorSelection) {
-		case 1: { featureDetector = new cv::SiftFeatureDetector();			configurationTags << "_SIFT-Detector"; selectorTags << "_SIFT-Detector"; break; }
+		case 1: { featureDetector = new cv::SiftFeatureDetector();		configurationTags << "_SIFT-Detector"; selectorTags << "_SIFT-Detector"; break; }
 		case 2: { featureDetector = new cv::SurfFeatureDetector(400);		configurationTags << "_SURF-Detector"; selectorTags << "_SURF-Detector"; break; }
 		case 3: { featureDetector = new cv::GoodFeaturesToTrackDetector();	configurationTags << "_GFTT-Detector"; selectorTags << "_GFTT-Detector"; break; }
-		case 4: { featureDetector = new cv::FastFeatureDetector();			configurationTags << "_FAST-Detector"; selectorTags << "_FAST-Detector"; break; }
-		case 5: { featureDetector = new cv::OrbFeatureDetector();			configurationTags << "_ORB-Detector";  selectorTags << "_ORB-Detector"; break; }
-		case 6: { featureDetector = new cv::BRISK();						configurationTags << "_BRISK-Detector"; selectorTags << "_BRISK-Detector"; break; }
-		case 7: { featureDetector = new cv::StarFeatureDetector();			configurationTags << "_STAR-Detector"; selectorTags << "_STAR-Detector"; break; }
-		case 8: { featureDetector = new cv::MserFeatureDetector();			configurationTags << "_MSER-Detector"; selectorTags << "_MSER-Detector"; break; }
+		case 4: { featureDetector = new cv::FastFeatureDetector();		configurationTags << "_FAST-Detector"; selectorTags << "_FAST-Detector"; break; }
+		case 5: { featureDetector = new cv::OrbFeatureDetector();		configurationTags << "_ORB-Detector";  selectorTags << "_ORB-Detector"; break; }
+		case 6: { featureDetector = new cv::BRISK();				configurationTags << "_BRISK-Detector"; selectorTags << "_BRISK-Detector"; break; }
+		case 7: { featureDetector = new cv::StarFeatureDetector();		configurationTags << "_STAR-Detector"; selectorTags << "_STAR-Detector"; break; }
+		case 8: { featureDetector = new cv::MserFeatureDetector();		configurationTags << "_MSER-Detector"; selectorTags << "_MSER-Detector"; break; }
 		default: break;
 	}
 
 	switch (descriptorExtractorSelection) {
 		case 1: { descriptorExtractor = new cv::SiftDescriptorExtractor();	configurationTags << "_SIFT-Extractor"; break; }
 		case 2: { descriptorExtractor = new cv::SurfDescriptorExtractor();	configurationTags << "_SURF-Extractor"; break; }
-		case 3: { descriptorExtractor = new cv::FREAK();					configurationTags << "_FREAK-Extractor"; break; }
-		case 4: { descriptorExtractor = new cv::BriefDescriptorExtractor();	configurationTags << "_BRIEF-Extractor"; break; }		
+		case 3: { descriptorExtractor = new cv::FREAK();			configurationTags << "_FREAK-Extractor"; break; }
+		case 4: { descriptorExtractor = new cv::BriefDescriptorExtractor();	configurationTags << "_BRIEF-Extractor"; break; }
 		case 5: { descriptorExtractor = new cv::OrbDescriptorExtractor();	configurationTags << "_ORB-Extractor";  break; }
-		case 6: { descriptorExtractor = new cv::BRISK();					configurationTags << "_BRISK-Extractor";  break; }
-		
+		case 6: { descriptorExtractor = new cv::BRISK();			configurationTags << "_BRISK-Extractor";  break; }
 		default: break;
 	}
 
 
 	int bfNormType;
 	Ptr<cv::flann::IndexParams> flannIndexParams/* = new cv::flann::AutotunedIndexParams()*/;
-	if (descriptorExtractorSelection > 2) { // binary descriptors		
+	if (descriptorExtractorSelection > 2) { // binary descriptors
 		bfNormType = cv::NORM_HAMMING;
 		//flannIndexParams = new cv::flann::HierarchicalClusteringIndexParams();
 		flannIndexParams = new cv::flann::LshIndexParams(12, 20, 2);
-	} else { // float descriptors		
+	} else { // float descriptors
 		bfNormType = cv::NORM_L2;
 		flannIndexParams = new cv::flann::KDTreeIndexParams();
 	}
@@ -165,7 +164,7 @@ void CLI::setupImageRecognition() {
 
 	switch (imagesDBLevelOfDetailSelection) {
 		case 1: { imagesDBLevelOfDetail.push_back(REFERENCE_IMGAGES_DIRECTORY_VERY_LOW);	configurationTags << "_veryLowQualityImageDB"; break; }
-		case 2: { imagesDBLevelOfDetail.push_back(REFERENCE_IMGAGES_DIRECTORY_LOW);			configurationTags << "_lowQualityImageDB"; break; }
+		case 2: { imagesDBLevelOfDetail.push_back(REFERENCE_IMGAGES_DIRECTORY_LOW);		configurationTags << "_lowQualityImageDB"; break; }
 		case 3: { imagesDBLevelOfDetail.push_back(REFERENCE_IMGAGES_DIRECTORY_MEDIUM);		configurationTags << "_mediumQualityImageDB"; break; }
 		case 4: {
 			imagesDBLevelOfDetail.push_back(REFERENCE_IMGAGES_DIRECTORY_VERY_LOW);
@@ -181,8 +180,7 @@ void CLI::setupImageRecognition() {
 		case 2: { inliersSelectionMethodFlagToUseGlobalMatch = false;	configurationTags << "_localMatch"; break; }
 		default: break;
 	}
-	
-	
+
 	_imageDetector = new ImageDetector(featureDetector, descriptorExtractor, descriptorMatcher, _imagePreprocessor, configurationTags.str(), selectorTags.str(), imagesDBLevelOfDetail, inliersSelectionMethodFlagToUseGlobalMatch);
 }
 
@@ -207,12 +205,12 @@ int CLI::selectInliersSelectionMethod() {
 }
 
 
-int CLI::selectFeatureDetector() {	
+int CLI::selectFeatureDetector() {
 	cout << "  => Select feature detector:\n";
 	cout << "    1 - SIFT\n";
 	cout << "    2 - SURF\n";
 	cout << "    3 - GFTT\n";
-	cout << "    4 - FAST\n";	
+	cout << "    4 - FAST\n";
 	cout << "    5 - ORB\n";
 	cout << "    6 - BRISK\n";
 	cout << "    7 - STAR\n";
@@ -222,20 +220,20 @@ int CLI::selectFeatureDetector() {
 }
 
 
-int CLI::selectDescriptorExtractor() {	
+int CLI::selectDescriptorExtractor() {
 	cout << "  => Select descriptor extractor:\n";
 	cout << "    1 - SIFT\n";
 	cout << "    2 - SURF\n";
 	cout << "    3 - FREAK\n";
-	cout << "    4 - BRIEF\n";			
+	cout << "    4 - BRIEF\n";
 	cout << "    5 - ORB\n";
-	cout << "    6 - BRISK\n";	
+	cout << "    6 - BRISK\n";
 
 	return ConsoleInput::getInstance()->getIntCin("\n >>> Option [1, 6]: ", "Select one of the options above!", 1, 7);
 }
 
 
-int CLI::selectDescriptorMatcher() {	
+int CLI::selectDescriptorMatcher() {
 	cout << "  => Select descriptor matcher:\n";
 	cout << "    1 - FlannBasedMatcher\n";
 	cout << "    2 - BFMatcher\n";

@@ -49,12 +49,12 @@ class CLI {
 		int selectInliersSelectionMethod();
 		int selectFeatureDetector();
 		int selectDescriptorExtractor();
-		int selectDescriptorMatcher();		
-		
+		int selectDescriptorMatcher();
+
 		void showVersion();
 
 	private:
-		Ptr<ImagePreprocessor> _imagePreprocessor;		
+		Ptr<ImagePreprocessor> _imagePreprocessor;
 		Ptr<ImageDetector> _imageDetector;
 };
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  </Commnd Line user Interface>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
