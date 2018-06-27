@@ -1,13 +1,10 @@
-# aponteeduardo@gmail.com
-# copyright (C) 2017
-
 # ===========================================================================
 # Set up
 # ===========================================================================
 
 SRCDIR = . #$(abs_top_srcdir)
+
 # Include the source directory and the project wide header
-# CXXFLAGS += -I$(SRCDIR) -I$(SRCDIR)/include -std=c++11 -Wall -pedantic
 CXXFLAGS += -I$(SRCDIR) -I../ImageAnalysis -std=c++11 -Wall -pedantic
 
 GUIUTILS_OBJ = $(wildcard ../GUI/*.o)

@@ -1,4 +1,4 @@
-#                                               -*- Autoconf -*-
+#                    -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
@@ -30,5 +30,3 @@ AC_CHECK_FUNCS([gettimeofday pow sqrt])
 AC_CONFIG_FILES([Makefile CLI/Makefile GUI/Makefile ImageAnalysis/Makefile libs/Makefile libs/Transformations/Makefile])
 
 AC_OUTPUT
-# (Makefile, CLI/Makefile)
-
